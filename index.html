@@ -13,11 +13,18 @@
 			font-size: 1.3rem;
 		}
 		button {
-			padding: 20px;
+			background-color: #42f48f;
+
+		}
+		.btn {
+			padding: 0 20px;
+			font-weight: bold;
 		}
 		label {
 			width: 20%;
-			margin: 0;
+			margin: 0 10px;
+			text-align: right;
+
 		}
 		input {
 			width: 70%;
@@ -27,6 +34,8 @@
 			border: 1px #CCC solid;
 			font-size: 1.2rem;
 			padding-left: 10px;
+			border-radius: 5px;
+			border-color: #42f48f;
 		}
 		.title{
 			margin: 0 60px;
@@ -43,14 +52,17 @@
 		}
 		#gen-button {
 			margin-right: 10px;
+			margin-top: 10px;
 		}
 		.clip {
 			color: #42f48f;
 			transition: all 1s ease-out;
+			padding-top: 0px;
+			margin:0;
+			margin-top: 10px;
 		}
 		.hidden {
 			visibility: hidden;
-
 		}
 	</style>
 </head>
@@ -64,47 +76,47 @@
 		<div class='row'>
 			<label for='account'>Account</label>
 			<input type='text' id='account'>
-			<button class='button' id='account-btn' value="copy">Ctrl+C</button>
+			<button class='button btn' id='account-btn' value="copy">Ctrl+C</button>
 		</div>
 		<div class='row'>
 			<label for='con-key'>Consumer Key</label>
 			<input type='text' id='con-key'>
-			<button class='button' id='con-key-btn' value="copy">Ctrl+C</button>
+			<button class='button btn' id='con-key-btn' value="copy">Ctrl+C</button>
 		</div>
 		<div class='row'>
 			<label for='con-secret'>Consumer Secret</label>
 			<input type='text' id='con-secret'>
-			<button class='button' id='con-secret-btn' value="copy">Ctrl+C</button>			
+			<button class='button btn' id='con-secret-btn' value="copy">Ctrl+C</button>			
 		</div>
 		<div class='row'>
 			<label for='tkn'>Token</label>
 			<input type='text' id='tkn'>
-			<button class='button' id='tkn-btn' value="copy">Ctrl+C</button>			
+			<button class='button btn' id='tkn-btn' value="copy">Ctrl+C</button>			
 		</div>
 		<div class='row'>
 			<label for='tkn-secret'>Token Secret</label>
 			<input type='text' id='tkn-secret'>
-			<button class='button' id='tkn-secret-btn' value="copy">Ctrl+C</button>			
+			<button class='button btn' id='tkn-secret-btn' value="copy">Ctrl+C</button>			
 		</div>
 		<div class='row'>
 			<label for='nonce'>Nonce</label>
 			<input type='text' id='nonce'>
-			<button class='button' id='nonce-btn' value="copy">Ctrl+C</button>		
+			<button class='button btn' id='nonce-btn' value="copy">Ctrl+C</button>		
 		</div>
 		<div class='row'>
 			<label for='timestamp'>Timestamp</label>
 			<input type='text' id='timestamp'>
-			<button class='button' id='timestamp-btn' value="copy">Ctrl+C</button>
+			<button class='button btn' id='timestamp-btn' value="copy">Ctrl+C</button>
 		</div>
 		<div class='row'>
 			<label for='signature'>Signature</label>
 			<input type='text' id='signature'>
-			<button class='button' id='signature-btn' value="copy">Ctrl+C</button>			
+			<button class='button btn' id='signature-btn' value="copy">Ctrl+C</button>			
 		</div>
 
 		<div class='row'>
 			<button class='btn' id='gen-button'>Generate Tokens</button>
-			<p class="clip hidden">Passport copied to clipboard.</p>
+			<p class="clip hidden">The NetSuite XML Passport has been copied to your clipboard.</p>
 		</div>
 		
 	</div>
