@@ -27,7 +27,7 @@
 
 		}
 		input {
-			width: 70%;
+			width: 65%;
 			border: 0;
 			background-color: black;
 			color: white;
@@ -75,6 +75,9 @@
 			opacity: 1;
 			transition: visibility 0s linear 0s, opacity 800ms;
 		}
+		span {
+			color: #42f48f;
+		}
 	</style>
 </head>
 <body>
@@ -85,48 +88,48 @@
 
 	<div class='container' id='container'>
 		<div class='row'>
-			<label for='account'>Account</label>
+			<label for='account'><span>_ </span>Account</label>
 			<input type='text' id='account'>
 			<button class='button btn' id='account-btn' value="copy">Ctrl+C</button>
 		</div>
 		<div class='row'>
-			<label for='con-key'>Consumer Key</label>
+			<label for='con-key'><span>_ </span>Consumer Key</label>
 			<input type='text' id='con-key'>
 			<button class='button btn' id='con-key-btn' value="copy">Ctrl+C</button>
 		</div>
 		<div class='row'>
-			<label for='con-secret'>Consumer Secret</label>
+			<label for='con-secret'><span>_ </span>Consumer Secret</label>
 			<input type='text' id='con-secret'>
 			<button class='button btn' id='con-secret-btn' value="copy">Ctrl+C</button>			
 		</div>
 		<div class='row'>
-			<label for='tkn'>Token</label>
+			<label for='tkn'><span>_ </span>Token</label>
 			<input type='text' id='tkn'>
 			<button class='button btn' id='tkn-btn' value="copy">Ctrl+C</button>			
 		</div>
 		<div class='row'>
-			<label for='tkn-secret'>Token Secret</label>
+			<label for='tkn-secret'><span>_ </span>Token Secret</label>
 			<input type='text' id='tkn-secret'>
 			<button class='button btn' id='tkn-secret-btn' value="copy">Ctrl+C</button>			
 		</div>
 		<div class='row'>
-			<label for='nonce'>Nonce</label>
+			<label for='nonce'><span>_ </span>Nonce</label>
 			<input type='text' id='nonce'>
 			<button class='button btn' id='nonce-btn' value="copy">Ctrl+C</button>		
 		</div>
 		<div class='row'>
-			<label for='timestamp'>Timestamp</label>
+			<label for='timestamp'><span>_ </span>Timestamp</label>
 			<input type='text' id='timestamp'>
 			<button class='button btn' id='timestamp-btn' value="copy">Ctrl+C</button>
 		</div>
 		<div class='row'>
-			<label for='signature'>Signature</label>
+			<label for='signature'><span>_ </span>Signature</label>
 			<input type='text' id='signature'>
 			<button class='button btn' id='signature-btn' value="copy">Ctrl+C</button>			
 		</div>
 
 		<div class='row'>
-			<button class='btn' id='gen-button'>Generate Tokens</button>
+			<button class='btn' id='gen-button'><span>_ </span>Generate Tokens</button>
 			<p class="clip m-fadeOut"></p>
 		</div>
 		
