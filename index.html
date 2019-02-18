@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+	<meta charset='UTF-8'>
+	<title>Token Generator</title>
+	<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css' integrity='sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO' crossorigin='anonymous'>
+
+	<style>
+		body {
+			font-size: 12px;
+			background-color: black;
+			color: white;
+			font-size: 1.3rem;
+		}
+		button {
+			padding: 20px;
+		}
+		label {
+			width: 20%;
+			margin: 0;
+		}
+		input {
+			width: 70%;
+			border: 0;
+			background-color: black;
+			color: white;
+			border: 1px #CCC solid;
+			font-size: 1.2rem;
+			padding-left: 10px;
+		}
+		.title{
+			margin: 0 60px;
+			padding: 40px 10px; 
+		}
+		.row {
+			margin: 10px;
+		}
+		.button {
+			background-color: #42f48f;
+			border: 1px #CCC solid;
+			padding: 5px 10px;
+			color: black;
+		}
+		#gen-button {
+			margin-right: 10px;
+		}
+		.clip {
+			color: #42f48f;
+			transition: all 1s ease-out;
+		}
+		.hidden {
+			visibility: hidden;
+
+		}
+	</style>
+</head>
+<body>
+	<div class='container title'>
+		<h1>NetSuite Token Passport Generator</h1>
+	</div>
+
+
+	<div class='container' id='container'>
+		<div class='row'>
+			<label for='account'>Account</label>
+			<input type='text' id='account'>
+			<button class='button' id='account-btn' value="copy">Ctrl+C</button>
+		</div>
+		<div class='row'>
+			<label for='con-key'>Consumer Key</label>
+			<input type='text' id='con-key'>
+			<button class='button' id='con-key-btn' value="copy">Ctrl+C</button>
+		</div>
+		<div class='row'>
+			<label for='con-secret'>Consumer Secret</label>
+			<input type='text' id='con-secret'>
+			<button class='button' id='con-secret-btn' value="copy">Ctrl+C</button>			
+		</div>
+		<div class='row'>
+			<label for='tkn'>Token</label>
+			<input type='text' id='tkn'>
+			<button class='button' id='tkn-btn' value="copy">Ctrl+C</button>			
+		</div>
+		<div class='row'>
+			<label for='tkn-secret'>Token Secret</label>
+			<input type='text' id='tkn-secret'>
+			<button class='button' id='tkn-secret-btn' value="copy">Ctrl+C</button>			
+		</div>
+		<div class='row'>
+			<label for='nonce'>Nonce</label>
+			<input type='text' id='nonce'>
+			<button class='button' id='nonce-btn' value="copy">Ctrl+C</button>		
+		</div>
+		<div class='row'>
+			<label for='timestamp'>Timestamp</label>
+			<input type='text' id='timestamp'>
+			<button class='button' id='timestamp-btn' value="copy">Ctrl+C</button>
+		</div>
+		<div class='row'>
+			<label for='signature'>Signature</label>
+			<input type='text' id='signature'>
+			<button class='button' id='signature-btn' value="copy">Ctrl+C</button>			
+		</div>
+
+		<div class='row'>
+			<button class='btn' id='gen-button'>Generate Tokens</button>
+			<p class="clip hidden">Passport copied to clipboard.</p>
+		</div>
+		
+	</div>
+
+
+	<script src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js' integrity='sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49' crossorigin='anonymous'></script>
+	<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js' integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy' crossorigin='anonymous'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/hmac-sha256.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js'></script>
+
+	<script>
+		var 	nonce = '', 
+				timestamp = '', 
+				signature = '',
+				tokenPassport = '',
+				clipboard = '',
+				tokens = {};
+
+		function getInputValues () {
+			tokens = {
+				"account": document.getElementById('account').value,
+				"conKey": document.getElementById('con-key').value,
+				"consumerSecret": document.getElementById('con-secret').value,
+				"tokenSecret": document.getElementById('tkn-secret').value,
+				"token": document.getElementById('tkn').value
+			}
+			return tokens;
+		}
+
+		function showMsg() {
+			document.querySelector('.clip').classList.remove('hidden');		
+		}
+
+		function hideMsg() {
+			document.querySelector('.clip').classList.add('hidden');		
+		}
+
+		function generateAuthentication () {
+			if ((tokens.account && tokens.conKey && tokens.consumerSecret && tokens.tokenSecret && tokens.token) !== '') {
+				nonce = generateNonce();
+				tokens.nonce = nonce;
+				document.getElementById('nonce').value = nonce;
+				timestamp = getTimestamp();
+				tokens.timestamp = timestamp;
+				document.getElementById('timestamp').value = timestamp;
+				signature = generateSignature(nonce, timestamp, tokens.conKey, tokens.account, tokens.consumerSecret, tokens.tokenSecret, tokens.token);
+				tokens.signature = signature;
+				document.getElementById('signature').value = signature;
+				console.log(tokens);
+				tokenPassport = `<tokenPassport xsi:type='platformCore:TokenPassport'>\n
+								<account xsi:type='xsd:string'>${tokens.account}</account>\n
+								<consumerKey xsi:type='xsd:string'>${tokens.conKey}</consumerKey>\n
+								<token xsi:type='xsd:string'>${tokens.token}</token>\n
+								<nonce xsi:type='xsd:string'>${tokens.nonce}</nonce>\n
+								<timestamp xsi:type='xsd:long'>${tokens.timestamp}</timestamp>\n
+								<signature algorithm='HMAC_SHA256' xsi:type='platformCore:TokenPassportSignature'>${tokens.signature}</signature>\n
+								</tokenPassport>`;
+				var clipboard = document.createElement("input");
+				document.body.appendChild(clipboard);
+				clipboard.setAttribute('value', tokenPassport);
+				clipboard.select();
+				document.execCommand("copy");
+				document.body.removeChild(clipboard);
+				console.log(tokenPassport);
+				showMsg();
+				setTimeout(hideMsg, 1000);
+
+			} else {
+				console.log('Not enough arguments to complete this request');
+			}
+		}
+
+		document.getElementById('gen-button').addEventListener('click', function() {
+			getInputValues();
+			generateAuthentication();
+		});
+
+		document.querySelectorAll('button').forEach((el) => {
+			if (el.value === 'copy') {
+				document.getElementById(el.id).addEventListener('click', function() {
+					inputId = el.id.replace('-btn', '');
+					document.getElementById(inputId).select();
+					document.execCommand('copy');
+				});
+			}
+		})
+
+		function generateNonce(){
+			nonce = '';
+			var length = 14;
+			var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+			for(var i = 0; i < length; i++) {
+				nonce += possible.charAt(Math.floor(Math.random() * possible.length));
+			}
+			return nonce;
+		}
+
+		function getTimestamp() {
+			timestamp = Math.floor(Date.now() / 1000);
+			return timestamp;
+		}
+
+		function generateSignature (nonce, timestamp, conKey, account, consumerSecret, tokenSecret, token) {
+			var baseUrl = account + '&' + conKey + '&' + token + '&' + nonce + '&' + timestamp;
+			var key = consumerSecret + '&' + tokenSecret;
+			console.log(key);
+			var hash = CryptoJS.HmacSHA256(baseUrl, key);
+			signature = CryptoJS.enc.Base64.stringify(hash);
+			return signature;
+		}
+
+		const validateIfEmpty = (arguments) => {
+			for (let n of arguments) {
+				if (!n) {
+					console.log(false);
+					return false;
+				}
+			} return true;
+		};
+
+	</script>
+</body>
+</html>
