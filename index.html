@@ -117,7 +117,7 @@
 
 		<div class='row'>
 			<button class='btn' id='gen-button'>Generate Tokens</button>
-			<p class="clip hidden">The NetSuite XML Passport has been copied to your clipboard.</p>
+			<p class="clip hidden"></p>
 		</div>
 		
 	</div>
@@ -149,12 +149,14 @@
 			return tokens;
 		}
 
-		function showMsg() {
+		function showMsg(msg) {
+			document.querySelector('.clip').innerHTML = msg;
 			document.querySelector('.clip').classList.remove('hidden');		
 		}
 
 		function hideMsg() {
-			document.querySelector('.clip').classList.add('hidden');		
+			document.querySelector('.clip').classList.add('hidden');
+			document.querySelector('.clip').innerHTML = '';
 		}
 
 		function generateAuthentication () {
@@ -184,11 +186,11 @@
 				document.execCommand("copy");
 				document.body.removeChild(clipboard);
 				console.log(tokenPassport);
-				showMsg();
+				showMsg('The NetSuite XML Passport has been copied to your clipboard.');
 				setTimeout(hideMsg, 1000);
-
 			} else {
-				console.log('Not enough arguments to complete this request');
+				showMsg('Not enough arguments to complete this request');
+				setTimeout(hideMsg, 1000);
 			}
 		}
 
